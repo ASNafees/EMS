@@ -25,4 +25,7 @@ public class Employee {
 
     @Positive(message = "Salary must be positive")
     private Double salary;
+
+    @OneToOne(mappedBy = "employee")
+    private EmployeeAddress employeeAddress;
 }

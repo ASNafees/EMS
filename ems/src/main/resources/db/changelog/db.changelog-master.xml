@@ -23,4 +23,20 @@
         </createTable>
     </changeSet>
 
+<changeSet id="2" author="yourname">
+        <createTable tableName="employee_address">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="street" type="varchar(255)"/>
+            <column name="city" type="varchar(255)"/>
+            <column name="state" type="varchar(255)"/>
+            <column name="zip_code" type="varchar(10)"/>
+            <column name="employee_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_employee_address"
+                    references="employees(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
