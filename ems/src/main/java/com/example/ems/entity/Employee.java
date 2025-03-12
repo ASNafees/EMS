@@ -1,11 +1,15 @@
 package com.example.ems.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "employees")
@@ -26,6 +30,12 @@ public class Employee {
     @Positive(message = "Salary must be positive")
     private Double salary;
 
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private EmployeeAddress employeeAddress;
+
+
+    public EmployeeAddress getEmployeeAddress(){
+        return employeeAddress;
+    }
 }

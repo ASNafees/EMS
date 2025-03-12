@@ -58,14 +58,4 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeAddressRepository.save(employeeAddress);
     }
 
-    @Override
-    public EmployeeAddress getAddressById(Long id){
-        Employee employee=repository.findById(id).orElse(null);
-        if(employee!=null && employee.getEmployeeAddress!=null){
-
-        }
-      //  return EmployeeAddressRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
-            return null;
-
-    }
 }

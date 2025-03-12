@@ -1,5 +1,7 @@
 package com.example.ems.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,5 +30,6 @@ public class EmployeeAddress {
 
     @OneToOne
     @JoinColumn(name = "employee_id", nullable = false)
+    @JsonBackReference
     private Employee employee;
 }

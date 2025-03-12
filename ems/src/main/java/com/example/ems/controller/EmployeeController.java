@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/api/employees")
@@ -54,10 +56,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/{id}/address")
-
-public ResponseEntity<EmployeeAddress> addEmployeeAddress(@PathVariable Long id, @RequestBody EmployeeAddress address) {
+    public ResponseEntity<EmployeeAddress> addEmployeeAddress(@PathVariable Long id, @RequestBody EmployeeAddress address) {
     return ResponseEntity.ok(service.creatEmployeeAddress(id, address));
-}
-
+    }
+     
 }
 

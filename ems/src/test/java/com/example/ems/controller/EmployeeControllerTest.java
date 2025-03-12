@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,15 +32,23 @@ class EmployeeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private EmployeeService employeeService;
 
+    @InjectMocks
+    private EmployeeController employeeController;
+    
     private Employee employee;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        employee = new Employee(1, "John Doe", "john.doe@example.com", "Developer", 60000);
+        employee = new Employee();
+        employee.setId(1L);
+        employee.setName("John Doe");
+        employee.setEmail("john.doe@example.com");
+        employee.setPosition("developer");
+        employee.setSalary(60000.0);
     }
 
     @Test
@@ -67,7 +77,7 @@ class EmployeeControllerTest {
 
     @Test
     void getAllEmployees_ShouldReturnListOfEmployees() throws Exception {
-        List<Employee> employees = Arrays.asList(employee, new Employee(2L, "Jane Doe", "jane.doe@example.com", "Tester", 55000, null));
+        List<Employee> employees = Arrays.asList(employee, new Employee(2L, "Jane Doe", "jane.doe@example.com", "Tester", 55000.0, null));
         when(employeeService.getAllEmployees()).thenReturn(employees);
 
         mockMvc.perform(get("/api/employees"))
