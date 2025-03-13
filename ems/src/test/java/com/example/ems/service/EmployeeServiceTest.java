@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,37 @@ class EmployeeServiceTest {
         Employee foundEmployee = employeeService.getEmployeeById(1L);
         assertNotNull(foundEmployee);
         assertEquals(1L, foundEmployee.getId());
+    }
+
+    @Test
+    public void testUpdateEmployee() {
+        Employee existingEmployee = new Employee();
+        existingEmployee.setId(1L);
+        existingEmployee.setName("Old Name");
+        existingEmployee.setEmail("old@example.com");
+
+        Employee updatedEmployee = new Employee();
+        updatedEmployee.setName("New Name");
+        updatedEmployee.setEmail("new@example.com");
+
+        Mockito.when(employeeRepository.findById(1L)).thenReturn(Optional.of(existingEmployee));
+        Mockito.when(employeeRepository.save(Mockito.any(Employee.class))).thenReturn(updatedEmployee);
+
+        Employee result = employeeService.updateEmployee(1L, updatedEmployee);
+
+        assertEquals("New Name", result.getName());
+        assertEquals("new@example.com", result.getEmail());
+    }
+
+    @Test
+    public void testDeleteEmployee() {
+        Employee employee = new Employee();
+        employee.setId(1L);
+
+        Mockito.when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        Mockito.doNothing().when(employeeRepository).deleteById(1L);
+
+        assertDoesNotThrow(() -> employeeService.deleteEmployee(1L));
     }
 
     @Test

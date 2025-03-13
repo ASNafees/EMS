@@ -58,7 +58,7 @@ class EmployeeControllerTest {
         mockMvc.perform(post("/api/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(employee)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("John Doe"));
 
         verify(employeeService, times(1)).createEmployee(any(Employee.class));
@@ -85,5 +85,28 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$.size()").value(2));
 
         verify(employeeService, times(1)).getAllEmployees();
+    }
+
+    @Test
+    public void testUpdateEmployee() throws Exception {
+        Employee updatedEmployee = new Employee();
+        updatedEmployee.setName("Updated Name");
+        updatedEmployee.setEmail("updated@example.com");
+
+        Mockito.when(employeeService.updateEmployee(Mockito.eq(1L), Mockito.any(Employee.class))).thenReturn(updatedEmployee);
+
+        mockMvc.perform(put("/employees/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(updatedEmployee)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Updated Name"));
+    }
+
+    @Test
+    public void testDeleteEmployee() throws Exception {
+        Mockito.doNothing().when(employeeService).deleteEmployee(1L);
+
+        mockMvc.perform(delete("/employees/1"))
+                .andExpect(status().isNoContent());
     }
 }
