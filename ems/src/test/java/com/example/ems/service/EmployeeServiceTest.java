@@ -12,17 +12,19 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
 
-    @Mock
+    @MockBean
     private EmployeeRepository employeeRepository;
 
     @InjectMocks
@@ -43,11 +45,20 @@ class EmployeeServiceTest {
 
     @Test
     void testCreateEmployee() {
-        Employee employee=new Employee(null,"John Doe",null,null,null,null);
-        when(employeeRepository.save(employee)).thenReturn(employee);
-        Employee savedEmployee = employeeService.createEmployee(employee);
-        assertNotNull(savedEmployee);
-        assertEquals("John Doe", savedEmployee.getName());
+        //Employee employee=new Employee(null,"John Doe",null,null,null,null);
+        //when(employeeRepository.save(employee)).thenReturn(employee);
+
+        Employee employeeToSave = new Employee(null, "Alice Doe", "alice@example.com", "Engineer", 70000.0,null);
+
+        // Expected saved employee with an ID
+        Employee savedEmployee = new Employee(1L, "Alice Doe", "alice@example.com", "Engineer", 70000.0,null);
+
+        // Mock repository behavior
+        when(employeeRepository.save(any(Employee.class))).thenReturn(savedEmployee);
+
+        Employee result = employeeService.createEmployee(employeeToSave);
+        assertNotNull(result);
+        assertEquals("John Doe", result.getName());
     }
 
     @Test

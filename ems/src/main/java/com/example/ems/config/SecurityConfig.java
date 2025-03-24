@@ -16,7 +16,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.csrf().disable()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/employees").hasAnyRole("ADMIN", "USER") // GET allowed for both
                 .requestMatchers("/api/employees/").hasRole("ADMIN") // POST, PUT, DELETE only for ADMIN
